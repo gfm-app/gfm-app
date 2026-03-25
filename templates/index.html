@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GFM APP</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: #0f172a;
+            color: white;
+            font-family: Arial;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 340px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 48%;
+            padding: 6px;
+            border-radius: 6px;
+            border: none;
+            font-size: 14px;
+        }
+
+        /* ROJO */
+        .result {
+            margin-top: 15px;
+            text-align: center;
+            background: #7f1d1d;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fecaca;
+        }
+
+        .result span {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* VERDE */
+        .result-green {
+            margin-top: 15px;
+            text-align: center;
+            background: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            color: #a7f3d0;
+        }
+
+        .result-green span {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* AZUL GANANCIA */
+        .result-blue {
+            margin-top: 15px;
+            text-align: center;
+            background: #1e3a8a;
+            padding: 12px;
+            border-radius: 8px;
+            color: #bfdbfe;
+        }
+
+        .result-blue span {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* FILAS */
+        .ventas {
+            margin-top: 15px;
+        }
+
+        .venta-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .venta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0;
+        }
+
+        .venta-row input {
+            width: 22%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .venta-row span {
+            width: 20%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>🚀 GFM APP</h2>
+
+        <div class="form-group">
+            <label>Token</label>
+            <select>
+                <option>BTC</option>
+                <option>ETH</option>
+                <option>BNB</option>
+                <option>SOL</option>
+                <option>ADA</option>
+                <option>XRP</option>
+                <option>DOGE</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Comprado</label>
+            <input type="number" id="comprado" step="any" oninput="calcular()">
+        </div>
+
+        <div class="form-group">
+            <label>Precio compra</label>
+            <input type="number" id="precio" step="any" oninput="calcular()">
+        </div>
+
+        <!-- COMPRA -->
+        <div class="result">
+            <p>Valor compra:</p>
+            <span id="valor">$0.00</span>
+        </div>
+
+        <div class="ventas">
+
+            <div class="venta-header">
+                <span>%</span>
+                <span>Venta %</span>
+                <span>Precio</span>
+                <span>Tokens</span>
+            </div>
+
+            <div class="venta-row">
+                <span>28%</span>
+                <input type="number" id="p28" step="0.5" oninput="calcular()">
+                <input type="text" id="precio28" readonly>
+                <input type="text" id="t28" readonly>
+            </div>
+
+            <div class="venta-row">
+                <span>35%</span>
+                <input type="number" id="p35" step="0.5" oninput="calcular()">
+                <input type="text" id="precio35" readonly>
+                <input type="text" id="t35" readonly>
+            </div>
+
+            <div class="venta-row">
+                <span>37%</span>
+                <input type="number" id="p37" step="0.5" oninput="calcular()">
+                <input type="text" id="precio37" readonly>
+                <input type="text" id="t37" readonly>
+            </div>
+
+        </div>
+
+        <!-- VENTA -->
+        <div class="result-green">
+            <p>Valor venta:</p>
+            <span id="valor_venta">$0.00</span>
+        </div>
+
+        <!-- GANANCIA -->
+        <div class="result-blue">
+            <p>Ganancia / ROI:</p>
+            <span id="ganancia">$0.00 (0%)</span>
+        </div>
+
+    </div>
+
+    <script>
+        function calcular() {
+
+            let comprado = parseFloat(document.getElementById("comprado").value);
+            let precio = parseFloat(document.getElementById("precio").value);
+
+            if (!comprado || !precio) return;
+
+            // COMPRA
+            let total = comprado * precio;
+            document.getElementById("valor").innerText = "$" + total.toFixed(2);
+
+            // TOKENS
+            let t28 = comprado * 0.28;
+            let t35 = comprado * 0.35;
+            let t37 = comprado * 0.37;
+
+            document.getElementById("t28").value = t28.toFixed(6);
+            document.getElementById("t35").value = t35.toFixed(6);
+            document.getElementById("t37").value = t37.toFixed(6);
+
+            // % EDITABLE
+            let p28 = parseFloat(document.getElementById("p28").value);
+            let p35 = parseFloat(document.getElementById("p35").value);
+            let p37 = parseFloat(document.getElementById("p37").value);
+
+            // PRECIOS
+            let pv28 = 0, pv35 = 0, pv37 = 0;
+
+            if (p28) {
+                pv28 = precio + (precio * p28 / 100);
+                document.getElementById("precio28").value = pv28.toFixed(2);
+            }
+
+            if (p35) {
+                pv35 = precio + (precio * p35 / 100);
+                document.getElementById("precio35").value = pv35.toFixed(2);
+            }
+
+            if (p37) {
+                pv37 = precio + (precio * p37 / 100);
+                document.getElementById("precio37").value = pv37.toFixed(2);
+            }
+
+            // VENTA TOTAL
+            let valorVenta =
+                (t28 * pv28) +
+                (t35 * pv35) +
+                (t37 * pv37);
+
+            document.getElementById("valor_venta").innerText =
+                "$" + valorVenta.toFixed(2);
+
+            // GANANCIA
+            let ganancia = valorVenta - total;
+            let roi = (ganancia / total) * 100;
+
+            document.getElementById("ganancia").innerText =
+                "$" + ganancia.toFixed(2) + " (" + roi.toFixed(2) + "%)";
+        }
+    </script>
+
+</body>
+
+</html>
